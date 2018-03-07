@@ -5,13 +5,14 @@ using System.Text;
 
 namespace MyDictionary
 {
-    class AVLTree<TValue> : IDictionary<int, TValue>
+    class AVLTree<TKey, TValue> where TKey: IComparable<TKey>
     {
         private int index;
 
         private int size;
 
         private Node<TValue>[] array;
+
         private Node<TValue> this[int index]
         {
             get
@@ -29,18 +30,6 @@ namespace MyDictionary
             this.size = size;
             this.array = new Node<TValue>[this.size];
         }
-
-
-
-        public TValue this[int key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public ICollection<int> Keys => throw new NotImplementedException();
-
-        public ICollection<TValue> Values => throw new NotImplementedException();
-
-        public int Count => throw new NotImplementedException();
-
-        public bool IsReadOnly => throw new NotImplementedException();
 
         /// <summary>
         /// 
@@ -85,23 +74,6 @@ namespace MyDictionary
             }
 
             return null;
-        }
-
-        public void Add(TValue data)
-        {
-            int index = 0;
-
-            while (array[index] != null)
-            {
-                if (node > array[index])
-                {
-                    index = array[index].RightChild.Key;
-                }
-                else
-                {
-                    index = array[index].LeftChild.Key;
-                }
-            }            
         }
 
         /// <summary>
@@ -157,36 +129,6 @@ namespace MyDictionary
             return false;
         }
 
-        public void CopyTo(KeyValuePair<int, TValue>[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerator<KeyValuePair<int, TValue>> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(int key)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(KeyValuePair<int, TValue> item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool TryGetValue(int key, out TValue value)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -196,7 +138,6 @@ namespace MyDictionary
         }
 
         
-
         /// <summary>
         /// 
         /// </summary>
