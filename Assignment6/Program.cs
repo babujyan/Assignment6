@@ -20,7 +20,10 @@ namespace Assignment6
         {
             a d;
             d = b;
-            
+
+            Dictionary<int, string> a = new Dictionary<int, string>;
+
+            a.TryGetValue()
 
             Dictionary<a ,a> v = new Dictionary<a, a>();
             v.Add(d, d);
