@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyDictionary\MyDictionary.csproj">
-      <Project>{0e36e2ce-e272-4d8f-bcad-20b180eaa81e}</Project>
+      <Project>{7d214671-8f43-4d92-96ce-8c844fcd84a0}</Project>
       <Name>MyDictionary</Name>
     </ProjectReference>
   </ItemGroup>

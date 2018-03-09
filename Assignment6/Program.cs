@@ -11,7 +11,12 @@ namespace Assignment6
     {
         static void Main(string[] args)
         {
-            RedBlackTree<int, string> a = new RedBlackTree<int, string>(1, "Ashot");
+            RedBlackTree<int, string> a = new RedBlackTree<int, string>();
+            a.Add(1, "wjndjwn");
+
+            Dictionary<int, string> f = new Dictionary<int, string>();
+            KeyValuePair<int, string> keyValuePair = new KeyValuePair<int, string>(4, "jsnd0");
+            
         }
     }
 }

@@ -5,218 +5,204 @@ using System.Text;
 
 namespace MyDictionary
 {
-    //class AVLTree<TKey, TValue> where TKey: IComparable<TKey>
-    //{
-    //    private int index;
+    class AVLTree<TKey, TValue> where TKey : IComparable<TKey>
+    {
+        private int index;
 
-    //    private int size;
+        private int size;
 
-    //    private Node<TValue>[] array;
+        private Node<TValue>[] array;
 
-    //    private Node<TValue> this[int index]
-    //    {
-    //        get
-    //        {
-    //            return this.array[index];
-    //        }
-    //        set
-    //        {
-    //            this.array[index].Key = index;
-    //        }
-    //    }
+        private Node<TValue> this[int index]
+        {
+            get
+            {
+                return this.array[index];
+            }
+            set
+            {
+                this.array[index].Key = index;
+            }
+        }
 
-    //    public AVLTree(int size = 2)
-    //    {
-    //        this.size = size;
-    //        this.array = new Node<TValue>[this.size];
-    //    }
+        public AVLTree(int size = 2)
+        {
+            this.size = size;
+            this.array = new Node<TValue>[this.size];
+        }
 
-    //    /// <summary>
-    //    /// 
-    //    /// </summary>
-    //    /// <param name="key"></param>
-    //    /// <param name="value"></param>
-    //    public void Add(int key, TValue value)
-    //    {
-    //        Node<TValue> node = new Node<TValue>(value);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        public void Add(int key, TValue value)
+        {
+            Node<TValue> node = new Node<TValue>(value);
 
-    //        if (this.index == this.array.Length)
-    //        {
-    //            this.Grow();
-    //        }
+            if (this.index == this.array.Length)
+            {
+                this.Grow();
+            }
 
-    //        this.array[this.index++] = node;
-    //    }
+            this.array[this.index++] = node;
+        }
 
-    //    /// <summary>
-    //    /// 
-    //    /// </summary>
-    //    /// <param name="node"></param>
-    //    /// <returns></returns>
-    //    private Node<TValue> Search(Node<TValue> node)
-    //    {
-    //        int index = 0;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        //private Node<TValue> Search(Node<TValue> node)
+        //{
+        //    int index = 0;
 
-    //        while (array[index] != null)
-    //        {
-    //            if (node > array[index])
-    //            {
-    //                index = array[index].RightChild.Key;
-    //            }
-    //            else if (node < array[index])
-    //            {
-    //                index = array[index].LeftChild.Key;
-    //            }
-    //            else
-    //            {
-    //                return array[index];
-    //            }
-    //        }
+        //    while (array[index] != null)
+        //    {
+        //        if (node > array[index])
+        //        {
+        //            index = array[index].RightChild.Key;
+        //        }
+        //        else if (node < array[index])
+        //        {
+        //            index = array[index].LeftChild.Key;
+        //        }
+        //        else
+        //        {
+        //            return array[index];
+        //        }
+        //    }
 
-    //        return null;
-    //    }
+        //    return null;
+        //}
 
-    //    /// <summary>
-    //    /// 
-    //    /// </summary>
-    //    public void Clear()
-    //    {
-    //        this.size = 2;
-    //        this.array = new Node<TValue>[this.size];
-    //        this.index = 0;
-    //    }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public void Clear()
+        //{
+        //    this.size = 2;
+        //    this.array = new Node<TValue>[this.size];
+        //    this.index = 0;
+        //}
 
-    //    /// <summary>
-    //    /// 
-    //    /// </summary>
-    //    /// <param name="node"></param>
-    //    /// <returns></returns>
-    //    public bool Contains(TValue node)
-    //    {
-    //        int index = 0;
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="node"></param>
+        ///// <returns></returns>
+        //public bool Contains(TValue node)
+        //{
+        //    int index = 0;
 
-    //        while (array[index] != null)
-    //        {
-    //            //if (node > array[index].Data)
-    //            //{
-    //            //    index = array[index].RightChild.Key;
-    //            //}
-    //            //else if (node < array[index])
-    //            //{
-    //            //    index = array[index].LeftChild.Key;
-    //            //}
-    //            //else
-    //            //{
-    //            //    return true;
-    //            //}
-    //        }
+        //    while (array[index] != null)
+        //    {
+        //        //if (node > array[index].Data)
+        //        //{
+        //        //    index = array[index].RightChild.Key;
+        //        //}
+        //        //else if (node < array[index])
+        //        //{
+        //        //    index = array[index].LeftChild.Key;
+        //        //}
+        //        //else
+        //        //{
+        //        //    return true;
+        //        //}
+        //    }
 
-    //        return false;
-    //    }
+        //    return false;
+        //}
 
-    //    /// <summary>
-    //    /// 
-    //    /// </summary>
-    //    /// <param name="key"></param>
-    //    /// <returns></returns>
-    //    public bool ContainsKey(int key)
-    //    {
-    //        if(key < this.index)
-    //        {
-    //            return true;
-    //        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <returns></returns>
+        //public bool ContainsKey(int key)
+        //{
+        //    if (key < this.index)
+        //    {
+        //        return true;
+        //    }
 
-    //        return false;
-    //    }
+        //    return false;
+        //}
 
-    //    /// <summary>
-    //    /// 
-    //    /// </summary>
-    //    private void Grow()
-    //    {
-    //        this.array = new Node<TValue>[size << 1];
-    //    }
-
-        
-    //    /// <summary>
-    //    /// 
-    //    /// </summary>
-    //    /// <typeparam name="TKey"></typeparam>
-    //    public class Node<TKey>
-    //    {
-    //        public int Key { get; set;}
-
-    //        private int height;
-    //        public int Height
-    //        {
-    //            get
-    //            {
-    //                return this.height;
-    //            }
-
-    //            set
-    //            {
-    //                this.height = value;
-    //            }
-    //        }
-
-    //        public readonly TKey Data;
-
-    //        private Node<TKey> leftChild;
-    //        public Node<TKey> LeftChild
-    //        {
-    //            get
-    //            {
-    //                return this.leftChild;
-    //            }
-
-    //            set
-    //            {
-    //                this.leftChild = value;
-    //            }
-    //        }
+        /// <summary>
+        /// 
+        /// </summary>
+        private void Grow()
+        {
+            this.array = new Node<TValue>[size << 1];
+        }
 
 
-    //        private Node<TKey> rightChild;
-    //        public Node<TKey> RightChild
-    //        {
-    //            get
-    //            {
-    //                return this.rightChild;
-    //            }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <typeparam name="TKey"></typeparam>
+        public class Node<TKey>
+        {
+            public int Key { get; set; }
 
-    //            set
-    //            {
-    //                this.rightChild = value;
-    //            }
-    //        }
+            private int height;
+            public int Height
+            {
+                get
+                {
+                    return this.height;
+                }
+
+                set
+                {
+                    this.height = value;
+                }
+            }
+
+            public readonly TKey Data;
+
+            private Node<TKey> leftChild;
+            public Node<TKey> LeftChild
+            {
+                get
+                {
+                    return this.leftChild;
+                }
+
+                set
+                {
+                    this.leftChild = value;
+                }
+            }
 
 
-    //        public Node(TKey data)
-    //        {
-    //            this.Data = data;
-    //            this.height = 0;
-    //            this.rightChild = null;
-    //            this.leftChild = null;
-    //        }
+            private Node<TKey> rightChild;
+            public Node<TKey> RightChild
+            {
+                get
+                {
+                    return this.rightChild;
+                }
 
-    //        //public static bool operator>(Node<TKey> node1, Node<TKey> node2)
-    //        //{   
-    //        //    if((dynamic)node1.Data > (dynamic)node2.Data)
-    //        //    {
-    //        //        return true;
-    //        //    }
-    //        //    return false;
-    //        //}
+                set
+                {
+                    this.rightChild = value;
+                }
+            }
 
-    //        //public static bool operator <(Node<TKey> node1, Node<TKey> node2)
-    //        //{
-    //        //    if ((dynamic)node1.Data > (dynamic)node2.Data)
-    //        //    {
-    //        //        return false;
-    //        //    }
-    //        //    return true;
-    //        //}
-    //    }
-    //}
+
+            public Node(TKey data)
+            {
+                this.Data = data;
+                this.height = 0;
+                this.rightChild = null;
+                this.leftChild = null;
+            }
+
+            
+
+
+        }
+    }
 }
