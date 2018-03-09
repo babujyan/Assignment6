@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MyDictionary
 {
-    class RedBlackTree<TKey, TValue> : IDictionary<TKey, TValue> where TKey:IComparable<TKey> where TValue:IComparable<TValue>
+    public class RedBlackTree<TKey, TValue> : IDictionary<TKey, TValue> where TKey:IComparable<TKey> where TValue:IComparable<TValue>
     {
         private RedBlackNode rootNode;
 
@@ -39,9 +39,10 @@ namespace MyDictionary
         class RedBlackNode
         {
             private readonly TValue nodeValue;
-            private readonly TKey nodeKey;
+            private readonly TKey   nodeKey;
 
-            
+
+            private NodeColor    color;
             private RedBlackNode parentNode;
             private RedBlackNode leftNode;
             private RedBlackNode rightNode;
@@ -153,7 +154,17 @@ namespace MyDictionary
                 }
             }
                 
-            public NodeColor Color { get; set; }
+            public NodeColor Color
+            {
+                get
+                {
+                    return this.color;
+                }
+                set
+                {
+                    this.color = value;
+                }
+            }
 
             public Direction ParentDirection
             {
@@ -170,7 +181,7 @@ namespace MyDictionary
 
             public bool IsRoot
             {
-                get { return (this.ParentNode == null); }
+                get { return (this.parentNode == null); }
             }
 
             public bool IsLeaf
@@ -265,6 +276,47 @@ namespace MyDictionary
                 }
             }
 
+            public void RepairTree()
+            {
+                if (this.parentNode == null)
+                {
+                    this.color = NodeColor.BLACK;
+                }
+                else if (parentNode.color == NodeColor.RED)
+                {
+                    if (this.Uncle.color == NodeColor.RED)
+                    {
+                        this.parentNode.color = NodeColor.BLACK;
+                        this.Uncle.color = NodeColor.BLACK;
+                        this.Grandparent.color = NodeColor.RED;
+                        this.Grandparent.RepairTree();
+                    }
+                    else
+                    {
+
+                        if(this == this.Grandparent.leftNode.rightNode)
+                        {
+                            this.parentNode.RotateLeft();
+                        }
+                        else if(this == this.Grandparent.rightNode.leftNode)
+                        {
+                            this.parentNode.RotateRight();
+                        }
+                        if(this == parentNode.leftNode)
+                        {
+                            this.Grandparent.RotateRight();
+                        }
+                        else
+                        {
+                            this.Grandparent.RotateLeft();
+                        }
+
+                        parentNode.color = NodeColor.BLACK;
+                        Grandparent.color = NodeColor.RED;
+                    }
+                }
+            }
+
         }
 
         
@@ -276,7 +328,13 @@ namespace MyDictionary
 
         public ICollection<TValue> Values => throw new NotImplementedException();
 
-        public int Count => throw new NotImplementedException();
+        public int Count
+        {
+            get
+            {
+                return nodeCount;
+            }
+        }
 
         public bool IsReadOnly => throw new NotImplementedException();
 
@@ -292,12 +350,7 @@ namespace MyDictionary
         
         
 
-        public void Add(TKey key, TValue value)
-        {
-            RedBlackNode newNode = new RedBlackNode(key, value);
-            
-
-        }
+        
 
         /// <summary>
         /// 
@@ -343,15 +396,83 @@ namespace MyDictionary
             throw new NotImplementedException();
         }
 
-        public void Add(KeyValuePair<TKey, TValue> item)
+
+        public void Add(TKey key, TValue value)
         {
-            RedBlackNode newNode = new RedBlackNode(item.Key, item.Value)
-            
+            RedBlackNode newNode = new RedBlackNode(key, value);
+
+            if (this.rootNode == null)
+            {
+                this.rootNode = newNode;
+                this.nodeCount = 1;
+                this.rootNode.Color = NodeColor.BLACK;
+            }
+            else
+            {
+                RecursiveAdd(newNode, this.rootNode);
+            }
+
+            newNode.RepairTree();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        public void Add(KeyValuePair<TKey, TValue> item)
+        {
+            this.Add(item.Key, item.Value);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newNode"></param>
+        /// <param name="rootNode"></param>
+        private static void RecursiveAdd(RedBlackNode newNode, RedBlackNode rootNode)
+        {
+            if(rootNode == null)
+            {
+                throw new Exception("referenccce is null");
+            }
+            else if(newNode.NodeKey.CompareTo(rootNode.NodeKey) == -1)// new node is greater then root node
+            {
+                if (rootNode.RightNode != null)
+                {
+                    RecursiveAdd(newNode, rootNode.RightNode);
+                    return;
+                }
+                else
+                {
+                    rootNode.RightNode = newNode;
+                }
+            }
+            else
+            {
+                if (rootNode.LeftNode != null)
+                {
+                    RecursiveAdd(newNode, rootNode.LeftNode);
+                    return;
+                }
+                else
+                {
+                    rootNode.LeftNode = newNode;
+                }
+            }
+
+            newNode.ParentNode = rootNode;
+            newNode.Color = NodeColor.RED;
+        }
+
+        
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void Clear()
         {
-            throw new NotImplementedException();
+            this.rootNode = null;
+            this.nodeCount = 0;
         }
 
         /// <summary>
@@ -401,6 +522,7 @@ namespace MyDictionary
             AddToArr(ref index, temp, array);
 
         }
+
         /// <summary>
         /// 
         /// </summary>

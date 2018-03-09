@@ -48,5 +48,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyDictionary\MyDictionary.csproj">
+      <Project>{0e36e2ce-e272-4d8f-bcad-20b180eaa81e}</Project>
+      <Name>MyDictionary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
