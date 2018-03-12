@@ -101,18 +101,25 @@ namespace MyDictionary
             {
                 get
                 {
-                    var p = this.parentNode;
-                    if (p == null)
+                    
+                    if (this.parentNode == null)
                     {
                         return null; // No parent means no sibling
                     }
-                    if (this == p.leftNode)
+                    if (this.parentNode.leftNode != null)
                     {
-                        return p.rightNode;
+                        if (this.nodeKey.CompareTo(this.parentNode.leftNode.nodeKey) == 0)
+                        {
+                            return this.parentNode.rightNode;
+                        }
+                        else
+                        {
+                            return this.parentNode.leftNode;
+                        }
                     }
                     else
                     {
-                        return p.leftNode;
+                        return this.parentNode.leftNode;
                     }
                 }
             }
@@ -124,14 +131,12 @@ namespace MyDictionary
             {
                 get
                 {
-                    var parent = this.rightNode;
-                    var grandparent = this.Grandparent;
-                    if (grandparent == null)
+                    if (this.Grandparent == null)
                     {
                         return null;
                     }
 
-                    return parent.Sibling;
+                    return this.parentNode.Sibling;
                 }
             }
 
@@ -186,7 +191,7 @@ namespace MyDictionary
             {
                 get
                 {
-                    if (ParentNode == null || NodeKey.CompareTo(ParentNode.NodeKey) > 0)
+                    if (parentNode == null || NodeKey.CompareTo(ParentNode.NodeKey) > 0)
                     {
                         return Direction.LEFT;
                     }
@@ -220,21 +225,77 @@ namespace MyDictionary
             {
                 if (this.rightNode != null)
                 {
-                    if (this.Sibling == this.parentNode.leftNode)// this means that "this" is right node.
+                    if (this.parentNode != null)
                     {
-                        var temp = this.rightNode;
-                        while (temp.leftNode != null)
+                        if (this.Sibling != null)
                         {
-                            temp = temp.leftNode;
+                            if (this.Sibling == this.parentNode.leftNode)// this means that "this" is right node.
+                            {
+                                var temp = this.rightNode;
+                                while (temp.leftNode != null)
+                                {
+                                    temp = temp.leftNode;
+                                }
+
+                                this.rightNode.parentNode = this.parentNode;
+                                this.parentNode.rightNode = this.rightNode;
+
+                                temp.leftNode = this;
+                                temp.leftNode.rightNode = null;
+                                temp.leftNode.parentNode = temp;
+
+
+                            }
+                            else//left node
+                            {
+                                var temp = this.rightNode;
+                                while (temp.leftNode != null)
+                                {
+                                    temp = temp.leftNode;
+                                }
+
+                                this.rightNode.parentNode = this.parentNode;
+                                this.parentNode.leftNode = this.rightNode;
+
+                                temp.leftNode = this;
+                                temp.leftNode.rightNode = null;
+                                temp.leftNode.parentNode = temp;
+
+                            }
                         }
+                        else if(this.parentNode.leftNode == null) // right
+                        {
+                            var temp = this.rightNode;
+                            while (temp.leftNode != null)
+                            {
+                                temp = temp.leftNode;
+                            }
 
-                        temp.leftNode = this;
-                        temp.leftNode.rightNode = null;
-                        temp.leftNode.parentNode = temp;
-                        this.parentNode.rightNode = this.rightNode;
+                            this.rightNode.parentNode = this.parentNode;
+                            this.parentNode.rightNode = this.rightNode;
 
+                            temp.leftNode = this;
+                            temp.leftNode.rightNode = null;
+                            temp.leftNode.parentNode = temp;
+                                                        
+                        }
+                        else
+                        {
+                            var temp = this.rightNode;
+                            while (temp.leftNode != null)
+                            {
+                                temp = temp.leftNode;
+                            }
+
+                            this.rightNode.parentNode = this.parentNode;
+                            this.parentNode.leftNode = this.rightNode;
+
+                            temp.leftNode = this;
+                            temp.leftNode.rightNode = null;
+                            temp.leftNode.parentNode = temp;
+                        }
                     }
-                    else//left node
+                    else
                     {
                         var temp = this.rightNode;
                         while (temp.leftNode != null)
@@ -242,37 +303,97 @@ namespace MyDictionary
                             temp = temp.leftNode;
                         }
 
+                        this.rightNode.parentNode = null;
+
                         temp.leftNode = this;
                         temp.leftNode.rightNode = null;
                         temp.leftNode.parentNode = temp;
-                        this.parentNode.leftNode = this.rightNode;
+                        this.parentNode = temp;
+                        
                     }
                 }
                 else
                 {
-                    throw new Exception("Can not Rotate left.");
+                    //throw new Exception("Can not Rotate left.");
                 }
             }
 
             public void RotateRight()
             {
-                if (this.rightNode != null)
+                if (this.leftNode != null)
                 {
-                    if (this.Sibling == this.parentNode.leftNode)// this means that "this" is right node.
+                    if (this.parentNode != null)
                     {
-                        var temp = this.leftNode;
-                        while (temp.rightNode != null)
+                        if (this.Sibling != null)
                         {
-                            temp = temp.rightNode;
+
+                            if (this.Sibling == this.parentNode.leftNode)// this means that "this" is right node.
+                            {
+                                var temp = this.leftNode;
+                                while (temp.rightNode != null)
+                                {
+                                    temp = temp.rightNode;
+                                }
+
+                                this.leftNode.parentNode = this.parentNode;
+                                this.parentNode.rightNode = this.leftNode;
+
+                                temp.rightNode = this;
+                                temp.rightNode.leftNode = null;
+                                temp.rightNode.parentNode = temp;
+                                
+
+                            }
+                            else//left node
+                            {
+                                var temp = this.leftNode;
+                                while (temp.rightNode != null)
+                                {
+                                    temp = temp.rightNode;
+                                }
+
+                                this.leftNode.parentNode = this.parentNode;
+                                this.parentNode.leftNode = this.leftNode;
+
+                                temp.rightNode = this;
+                                temp.rightNode.leftNode = null;
+                                temp.rightNode.parentNode = temp;
+                                
+                            }
                         }
+                        else if(this.parentNode.leftNode == null) //right
+                        {
+                            var temp = this.leftNode; 
+                            while (temp.rightNode != null)
+                            {
+                                temp = temp.rightNode;
+                            }
 
-                        temp.rightNode = this;
-                        temp.rightNode.leftNode = null;
-                        temp.rightNode.parentNode = temp;
-                        this.parentNode.rightNode = this.leftNode;
+                            this.leftNode.parentNode = this.parentNode;
+                            this.parentNode.rightNode = this.leftNode;
 
+                            temp.rightNode = this;
+                            temp.rightNode.leftNode = null;
+                            temp.rightNode.parentNode = temp;
+
+                        }
+                        else
+                        {
+                            var temp = this.leftNode;
+                            while (temp.rightNode != null)
+                            {
+                                temp = temp.rightNode;
+                            }
+
+                            this.leftNode.parentNode = this.parentNode;
+                            this.parentNode.leftNode = this.leftNode;
+
+                            temp.rightNode = this;
+                            temp.rightNode.leftNode = null;
+                            temp.rightNode.parentNode = temp;
+                        }
                     }
-                    else//left node
+                    else
                     {
                         var temp = this.leftNode;
                         while (temp.rightNode != null)
@@ -280,15 +401,17 @@ namespace MyDictionary
                             temp = temp.rightNode;
                         }
 
+                        this.leftNode.parentNode = null;
+                       
                         temp.rightNode = this;
                         temp.rightNode.leftNode = null;
                         temp.rightNode.parentNode = temp;
-                        this.parentNode.leftNode = this.leftNode;
+                        
                     }
                 }
                 else
                 {
-                    throw new Exception("Can not Rotate Right.");
+                   // throw new Exception("Can not Rotate Right.");
                 }
             }
 
@@ -298,9 +421,9 @@ namespace MyDictionary
                 {
                     this.color = NodeColor.BLACK;
                 }
-                else if (parentNode.color == NodeColor.RED)
+                else if (this.parentNode.Color != NodeColor.BLACK)
                 {
-                    if (this.Uncle.color == NodeColor.RED)
+                    if (this.Uncle.color == NodeColor.RED)//What if Uncle == null
                     {
                         this.parentNode.color = NodeColor.BLACK;
                         this.Uncle.color = NodeColor.BLACK;
@@ -313,11 +436,22 @@ namespace MyDictionary
                         if (this == this.Grandparent.leftNode.rightNode)
                         {
                             this.parentNode.RotateLeft();
+                            this.leftNode = this.leftNode.leftNode;
+                            this.rightNode = this.leftNode.rightNode;
+                            this.parentNode = this.leftNode.parentNode;
+                            this.Color = this.leftNode.Color;
                         }
                         else if (this == this.Grandparent.rightNode.leftNode)
                         {
                             this.parentNode.RotateRight();
+                            this.leftNode = this.rightNode.leftNode;
+                            this.rightNode = this.rightNode.rightNode;
+                            this.parentNode = this.rightNode.parentNode;
+                            this.Color = this.rightNode.Color;
                         }
+
+
+                        //case2
                         if (this == parentNode.leftNode)
                         {
                             this.Grandparent.RotateRight();
@@ -327,12 +461,11 @@ namespace MyDictionary
                             this.Grandparent.RotateLeft();
                         }
 
-                        parentNode.color = NodeColor.BLACK;
-                        Grandparent.color = NodeColor.RED;
-                    }
+                        this.parentNode.color = NodeColor.BLACK;
+                        this.Grandparent.color = NodeColor.RED; //dont understand what to do 
+                    }                 
                 }
             }
-
         }
 
 
@@ -464,7 +597,7 @@ namespace MyDictionary
                                 temp.RotateLeft();
                                 temp.ParentNode.LeftNode = temp.LeftNode;
                                 temp.LeftNode.ParentNode = temp.ParentNode;
-                                temp.ParentNode.RepairTree();
+                                //temp.ParentNode.RepairTree();
                                 return true;
                             }
                         }
@@ -540,7 +673,7 @@ namespace MyDictionary
                                     temp.RotateLeft();
                                     temp.ParentNode.LeftNode = temp.LeftNode;
                                     temp.LeftNode.ParentNode = temp.ParentNode;
-                                    temp.ParentNode.RepairTree();
+                                    //temp.ParentNode.RepairTree();
                                     return true;
                                 }
                             }
