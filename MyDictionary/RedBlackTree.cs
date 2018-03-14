@@ -39,25 +39,7 @@ namespace MyDictionary
                 return (this.rootNode == null);
             }
         }
-
-        
-
-        //public object Current1
-        //{
-        //    get
-        //    {
-        //        return this.current;
-        //    }
-        //}
-
-        private KeyValuePair<TKey, TValue> Current
-        {
-            get
-            {
-                return new KeyValuePair<TKey, TValue>(this.current.NodeKey, this.current.NodeValue);
-            }
-        }
-
+                
         public void Reset()
         {
             if (!isModfied)
@@ -72,7 +54,6 @@ namespace MyDictionary
             else
                 throw new Exception("dbddhsbd");
         }
-
 
         /// <summary>
         /// 
@@ -224,19 +205,6 @@ namespace MyDictionary
                 }
             }
 
-            public Direction ParentDirection
-            {
-                get
-                {
-                    if (parentNode == null || NodeKey.CompareTo(ParentNode.NodeKey) > 0)
-                    {
-                        return Direction.LEFT;
-                    }
-
-                    return Direction.RIGHT;
-                }
-            }
-
             public bool IsRoot
             {
                 get { return (this.parentNode == null); }
@@ -284,12 +252,14 @@ namespace MyDictionary
                         }
                     }
                     node.leftNode.color = NodeColor.RED;
-                    node.rightNode.color = NodeColor.RED;
+                    //node.rightNode.color = NodeColor.RED;
                     node.color = NodeColor.BLACK;
 
                     this.parentNode = node;                    
                 }
             }
+
+
             public void RotateRight()
             {
                 if (this.leftNode != null)
@@ -314,7 +284,7 @@ namespace MyDictionary
                             this.parentNode.rightNode = node;
                         }
                     }
-                    node.leftNode.color = NodeColor.RED;
+                    //node.leftNode.color = NodeColor.RED;
                     node.rightNode.color = NodeColor.RED;
                     node.color = NodeColor.BLACK;
                     this.parentNode = node;
@@ -326,13 +296,7 @@ namespace MyDictionary
         }
 
 
-
-
-
-
-        public ICollection<TKey> Keys => throw new NotImplementedException();
-
-        public ICollection<TValue> Values => throw new NotImplementedException();
+       
 
         public int Count
         {
@@ -341,29 +305,46 @@ namespace MyDictionary
                 return nodeCount;
             }
         }
-
+        
 
 
         bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => throw new NotImplementedException();
 
+        /// <summary>
+        /// Gets the element in the collection at the current position of the enumerator.
+        /// </summary>
         KeyValuePair<TKey, TValue> IEnumerator<KeyValuePair<TKey, TValue>>.Current
         {
+
+            /// <summary>
+            /// Returns: The element in the collection at the current position of the enumerator.
+            /// </summary>
             get
             {
                 return new KeyValuePair<TKey, TValue>(this.current.NodeKey, this.current.NodeValue);
             }
         }
 
-        object IEnumerator.Current => throw new NotImplementedException();
+
+        /// <summary>
+        /// Gets the current element in the collection.
+        /// </summary>
+        object IEnumerator.Current
+        {
+            ///<summary>
+            ///Returns: The current element in the collection.
+            ///</summary>
+            get
+            {
+                return (object)current;
+            }
+        }
+
+        public ICollection<TKey> Keys => throw new NotImplementedException();
+
+        public ICollection<TValue> Values => throw new NotImplementedException();
 
         public TValue this[TKey key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-
-
-
-
-
-
 
 
         /// <summary>
@@ -571,7 +552,7 @@ namespace MyDictionary
 
             this.RepairTree(newNode);
 
-            
+            this.nodeCount++;
             this.rootNode.Color = NodeColor.BLACK;
             return;           
         }
@@ -899,14 +880,7 @@ namespace MyDictionary
             BLACK = 1
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public enum Direction
-        {
-            LEFT = 0,
-            RIGHT = 1
-        }
+        
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls

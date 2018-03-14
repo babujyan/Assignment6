@@ -28,9 +28,9 @@ namespace Assignment6
                 watch = Stopwatch.StartNew();
 
                 
-                for (int j = 0; j < 20; j++)
+                for (int j = 0; j < 100; j++)
                 {
-                    a[i].Add(j, j);
+                    a[i].Add(random.Next(),random.Next());
                     Console.WriteLine("_-_-___-_");
                 }
                 Console.WriteLine("hdsjnj");
