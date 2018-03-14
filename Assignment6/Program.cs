@@ -28,7 +28,7 @@ namespace Assignment6
                 watch = Stopwatch.StartNew();
 
                 
-                for (int j = 0; j < 100; j++)
+                for (int j = 0; j < 20; j++)
                 {
                     a[i].Add(j, j);
                     Console.WriteLine("_-_-___-_");

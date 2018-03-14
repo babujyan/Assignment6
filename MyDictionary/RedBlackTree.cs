@@ -67,13 +67,7 @@ namespace MyDictionary
                     return;
                 }
 
-                RedBlackNode temp = this.rootNode;
-                while (temp.LeftNode != null)
-                {
-                    temp = temp.LeftNode;
-                }
-
-                this.current = temp;
+                this.current = null;
             }
             else
                 throw new Exception("dbddhsbd");
@@ -829,45 +823,57 @@ namespace MyDictionary
         public bool MoveNext()
         {
             RedBlackNode temp;
-
-            if (current.RightNode == null)
+            if (this.current != null)
             {
-                if(this.current.ParentNode == null)
+                if (current.RightNode == null)
                 {
+                    if (this.current.ParentNode == null)
+                    {
+                        return false;
+                    }
+
+                    temp = current;
+                    while (temp.ParentNode != null && temp.ParentNode.RightNode == temp)
+                    {
+                        temp = temp.ParentNode;
+                    }
+
+
+                    if (temp.ParentNode != null)
+                    {
+                        this.current = temp.ParentNode;
+                        return true;
+                    }
+
+                    this.current = temp;
+                    this.MoveNext();
+
                     return false;
                 }
 
-                temp = current;
-                while(temp.ParentNode != null && temp.ParentNode.RightNode == temp)
+                temp = current.RightNode;
+                while (temp.LeftNode != null)
                 {
-                    temp = temp.ParentNode;
+                    temp = temp.LeftNode;
                 }
 
+                current = temp;
+                return true;
 
-                if (temp.ParentNode != null)
-                {
-                    this.current = temp.ParentNode;
-                    return true;
-                }
-
-                this.current = temp;
-                this.MoveNext();
-
-                return false;
             }
 
-            temp = current.RightNode;
-            while(temp.LeftNode != null)
+            temp = this.rootNode;
+            while (temp.LeftNode != null)
             {
                 temp = temp.LeftNode;
             }
 
-            current = temp;
+            this.current = temp;
             return true;
 
         }
 
-        //private RedBlackNode InOrderSuccessor(RedBlackNode )
+        
 
         
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
