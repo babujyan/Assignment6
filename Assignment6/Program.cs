@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MyDictionary;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 
 namespace Assignment6
 {
@@ -19,17 +21,20 @@ namespace Assignment6
             RedBlackTree<int, int>[] a = new RedBlackTree<int, int>[1000];
             var watch = Stopwatch.StartNew();
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 1; i++)
             {
                 random = new Random(10);
                 a[i] = new RedBlackTree<int, int>();
                 watch = Stopwatch.StartNew();
 
                 
-                for (int j = 0; j < i; j++)
+                for (int j = 0; j < 100; j++)
                 {
-                    a[i].Add(random.Next(), random.Next());
+                    a[i].Add(j, j);
+                    Console.WriteLine("_-_-___-_");
                 }
+                Console.WriteLine("hdsjnj");
+                a[i].Add(1001, 1001);
                 watch.Stop();
                 elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
                 Console.WriteLine(elapsedTime);
@@ -38,6 +43,10 @@ namespace Assignment6
             watch.Stop();
             elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
 
+            foreach(var q in a[0])
+            {
+                Console.WriteLine(q.Key);
+            }
 
             //RedBlackTree<int, int> a = new RedBlackTree<int, int>();
             //watch.Stop();
@@ -113,6 +122,8 @@ namespace Assignment6
             KeyValuePair<int, string> keyValuePair = new KeyValuePair<int, string>(4, "jsnd0");
             
         }
+
+        //eterator(scsesor), post order 
 
         private static RedBlackTree<int, int> RedBlackTree()
         {
