@@ -72,7 +72,7 @@ namespace MyDictionary
         /// </summary>
         class RedBlackNode
         {
-            private readonly TValue nodeValue;
+            private TValue nodeValue;
             private readonly TKey nodeKey;
 
 
@@ -95,6 +95,7 @@ namespace MyDictionary
             public TValue NodeValue
             {
                 get { return this.nodeValue; }
+                set { nodeValue = value; }
             }
 
             /// <summary>
@@ -340,12 +341,44 @@ namespace MyDictionary
             }
         }
 
-        public ICollection<TKey> Keys => throw new NotImplementedException();
+        public ICollection<TKey> Keys  => throw new NotImplementedException();
 
         public ICollection<TValue> Values => throw new NotImplementedException();
 
-        public TValue this[TKey key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public TValue this[TKey key]
+        {
+            get
+            {
+                TValue value;
+                if (this.TryGetValue(key, out value))
+                {
+                    return value;
+                }
+                throw new Exception("Does not contain this key");
+            }
+            set
+            {                
+                var temp = this.rootNode;
 
+                while (temp != null)
+                {
+                    switch (key.CompareTo(temp.NodeKey))
+                    {
+                        case -1:
+                            temp = temp.LeftNode;
+                            break;
+                        case 1:
+                            temp = temp.RightNode;
+                            break;
+                        default:
+                            temp.NodeValue = value;
+                            return;
+                    }
+                }
+
+                throw new Exception("Does not contain this key");
+            }
+        }
 
         /// <summary>
         /// 
@@ -573,6 +606,11 @@ namespace MyDictionary
         /// <param name="rootNode"></param>
         private static void RecursiveAdd(RedBlackNode newNode, RedBlackNode rootNode)
         {
+            if(newNode.NodeKey.CompareTo(rootNode.NodeKey) == 0)
+            {
+                throw new ArgumentException("An item with the same key has already been added.");
+            }
+
             if (newNode.NodeKey.CompareTo(rootNode.NodeKey) < 0)
             {
                 if (rootNode.LeftNode != null)
@@ -586,7 +624,6 @@ namespace MyDictionary
                 return;
             }
 
-
             if (rootNode.RightNode != null)
             {
                 RecursiveAdd(newNode, rootNode.RightNode);
@@ -595,8 +632,7 @@ namespace MyDictionary
                 
             rootNode.RightNode = newNode;
             rootNode.RightNode.ParentNode = rootNode;
-            return;
-            
+            return;            
         }
 
         private void RepairTree(RedBlackNode node)
@@ -740,11 +776,7 @@ namespace MyDictionary
         /// <param name="item"></param>
         /// <returns></returns>
         public bool Contains(KeyValuePair<TKey, TValue> item)
-        {
-            if (this.IsEmpty)
-            {
-                return false;
-            }
+        {            
             var temp = this.rootNode;
 
             while (temp != null)

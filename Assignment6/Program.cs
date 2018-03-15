@@ -30,14 +30,14 @@ namespace Assignment6
                 
                 for (int j = 0; j < 100; j++)
                 {
-                    a[i].Add(random.Next(),random.Next());
-                    Console.WriteLine("_-_-___-_");
+                    a[i].Add(j,j);                    
                 }
-                Console.WriteLine("hdsjnj");
-                a[i].Add(1001, 1001);
+                Console.WriteLine(a[i].ContainsKey(50));
+                a[i][50] = 20;
+                Console.WriteLine(a[i][50]);
                 watch.Stop();
                 elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
-                Console.WriteLine(elapsedTime);
+                //Console.WriteLine(elapsedTime);
             }
 
             watch.Stop();
@@ -83,8 +83,9 @@ namespace Assignment6
             random = new Random(1);
             for (int i = 0; i < 10000; i++)
             {
-                b.Add(random.Next(), random.Next());
+                b.Add(i,i);
             }
+           
             watch.Stop();
             elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
 
