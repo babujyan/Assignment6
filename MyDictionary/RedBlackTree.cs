@@ -8,12 +8,24 @@ namespace MyDictionary
 {
     public class RedBlackTree<TKey, TValue> : IDictionary<TKey, TValue>, IEnumerator<KeyValuePair<TKey, TValue>> where TKey : IComparable<TKey> where TValue : IComparable<TValue>
     {
+        /// <summary>
+        /// Referens to Root node.
+        /// </summary>
         private RedBlackNode rootNode;
 
+        /// <summary>
+        /// Current node.
+        /// </summary>
         private RedBlackNode current;
 
+        /// <summary>
+        /// Has been modified or not.
+        /// </summary>
         private bool isModfied;
 
+        /// <summary>
+        ///  Gets the root of the tree.
+        /// </summary>
         public TKey RootNode
         {
             get
@@ -22,16 +34,25 @@ namespace MyDictionary
             }
         }
 
+        /// <summary>
+        /// Number of nodes in tree.
+        /// </summary>
         private int nodeCount;
 
-        public int NodeCount
+        /// <summary>
+        ///  Gets the number of elements contained in the tree.
+        /// </summary>        
+        public int Count
         {
             get
             {
-                return this.nodeCount;
+                return nodeCount;
             }
         }
 
+        /// <summary>
+        /// Is tree empty or not.
+        /// </summary>
         public bool IsEmpty
         {
             get
@@ -39,7 +60,10 @@ namespace MyDictionary
                 return (this.rootNode == null);
             }
         }
-                
+
+        /// <summary>
+        /// Resets the currnet.(For Enumerator)
+        /// </summary>
         public void Reset()
         {
             if (!isModfied)
@@ -55,8 +79,9 @@ namespace MyDictionary
                 throw new Exception("dbddhsbd");
         }
 
+
         /// <summary>
-        /// 
+        /// Parametrless CTor.
         /// </summary>
         public RedBlackTree()
         {
@@ -68,21 +93,42 @@ namespace MyDictionary
         }
 
         /// <summary>
-        /// 
+        /// Type for Node.
         /// </summary>
         class RedBlackNode
         {
+            /// <summary>
+            /// Node Value.
+            /// </summary>
             private TValue nodeValue;
+
+            /// <summary>
+            /// Node Key.
+            /// </summary>
             private readonly TKey nodeKey;
 
-
+            /// <summary>
+            /// NOde color.
+            /// </summary>
             private NodeColor color;
+
+            /// <summary>
+            /// Parent node.
+            /// </summary>
             private RedBlackNode parentNode;
+
+            /// <summary>
+            /// Left node.
+            /// </summary>
             private RedBlackNode leftNode;
+
+            /// <summary>
+            /// Right node.
+            /// </summary>
             private RedBlackNode rightNode;
 
             /// <summary>
-            /// 
+            /// Gets node Key.
             /// </summary>
             public TKey NodeKey
             {
@@ -90,7 +136,7 @@ namespace MyDictionary
             }
 
             /// <summary>
-            /// 
+            /// Gets and sets node value.
             /// </summary>
             public TValue NodeValue
             {
@@ -99,7 +145,7 @@ namespace MyDictionary
             }
 
             /// <summary>
-            /// 
+            /// Grandparent node.
             /// </summary>
             public RedBlackNode Grandparent
             {
@@ -114,7 +160,7 @@ namespace MyDictionary
             }
 
             /// <summary>
-            /// 
+            /// Sibling node.
             /// </summary>
             public RedBlackNode Sibling
             {
@@ -144,7 +190,7 @@ namespace MyDictionary
             }
 
             /// <summary>
-            /// /
+            /// UNcle node.
             /// </summary>
             public RedBlackNode Uncle
             {
@@ -159,6 +205,9 @@ namespace MyDictionary
                 }
             }
 
+            /// <summary>
+            /// Gets and sets the Parent node.
+            /// </summary>
             public RedBlackNode ParentNode
             {
                 get
@@ -170,7 +219,10 @@ namespace MyDictionary
                     this.parentNode = value;
                 }
             }
-
+            
+            /// <summary>
+            /// Gets and sets the Left node.
+            /// </summary>
             public RedBlackNode LeftNode
             {
                 get
@@ -182,6 +234,10 @@ namespace MyDictionary
                     this.leftNode = value;
                 }
             }
+
+            /// <summary>
+            /// Gets and sets the right node.
+            /// </summary>
             public RedBlackNode RightNode
             {
                 get
@@ -194,6 +250,9 @@ namespace MyDictionary
                 }
             }
 
+            /// <summary>
+            /// Gets and sets the node color.
+            /// </summary>
             public NodeColor Color
             {
                 get
@@ -206,16 +265,29 @@ namespace MyDictionary
                 }
             }
 
+            /// <summary>
+            /// Is root or not.
+            /// </summary>
             public bool IsRoot
             {
                 get { return (this.parentNode == null); }
             }
 
+            /// <summary>
+            /// Is leaf or not.
+            /// </summary>
             public bool IsLeaf
             {
                 get { return (this.leftNode == null && this.rightNode == null); }
             }
 
+            /// <summary>
+            /// CTor for node.
+            /// </summary>
+            /// <param name="key">Key</param>
+            /// <param name="value">Value</param>
+            /// <param name="rightNode">Right node.</param>
+            /// <param name="leftNode">Left node.</param>
             public RedBlackNode(TKey key, TValue value, RedBlackNode rightNode, RedBlackNode leftNode)
             {
                 this.nodeKey = key;
@@ -226,8 +298,17 @@ namespace MyDictionary
                 this.color = NodeColor.RED;
             }
 
+            /// <summary>
+            /// CTor for node.
+            /// </summary>
+            /// <param name="key">Key</param>
+            /// <param name="value">Value</param>
             public RedBlackNode(TKey key, TValue value) : this(key, value, null, null) { }
 
+
+            /// <summary>
+            /// Rotates node left.
+            /// </summary>
             public void RotateLeft()
             {
                 if (this.rightNode != null)
@@ -260,7 +341,9 @@ namespace MyDictionary
                 }
             }
 
-
+            /// <summary>
+            /// Rotates node right.
+            /// </summary>
             public void RotateRight()
             {
                 if (this.leftNode != null)
@@ -295,21 +378,17 @@ namespace MyDictionary
                 return;                
             }           
         }
-
-
-       
-
-        public int Count
+                
+        /// <summary>
+        /// Gets a value indicating whether the tree is read-only.
+        /// </summary>
+        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly
         {
             get
             {
-                return nodeCount;
+                return false;
             }
         }
-        
-
-
-        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => throw new NotImplementedException();
 
         /// <summary>
         /// Gets the element in the collection at the current position of the enumerator.
@@ -325,8 +404,7 @@ namespace MyDictionary
                 return new KeyValuePair<TKey, TValue>(this.current.NodeKey, this.current.NodeValue);
             }
         }
-
-
+        
         /// <summary>
         /// Gets the current element in the collection.
         /// </summary>
@@ -341,10 +419,46 @@ namespace MyDictionary
             }
         }
 
-        public ICollection<TKey> Keys  => throw new NotImplementedException();
+        /// <summary>
+        /// Returns Collection of Keys.
+        /// </summary>
+        public ICollection<TKey> Keys
+        {
+            get
+            {
+                List<TKey> list = new List<TKey>();
+                this.Reset();
+                foreach(var i in this)
+                {
+                   
+                    list.Add(i.Key);
+                }
+                return list;
+            }
+        }
 
-        public ICollection<TValue> Values => throw new NotImplementedException();
+        /// <summary>
+        /// Returns collection of Values.
+        /// </summary>
+        public ICollection<TValue> Values
+        {
+            get
+            {
+                List<TValue> list = new List<TValue>();
+                this.Reset();
+                foreach (var i in this)
+                {
+                    list.Add(i.Value);
+                }
+                return list;
+            }
+        }
 
+        /// <summary>
+        /// Indexator for tree.
+        /// </summary>
+        /// <param name="key">Index of the iteam.</param>
+        /// <returns>Value of the iteam. </returns>
         public TValue this[TKey key]
         {
             get
@@ -381,10 +495,10 @@ namespace MyDictionary
         }
 
         /// <summary>
-        /// 
+        /// Retrns true if tree contains the key.
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">Key of the element.</param>
+        /// <returns>Wether or not tre contains the key.</returns>
         public bool ContainsKey(TKey key)
         {
             if (this.IsEmpty)
@@ -413,163 +527,184 @@ namespace MyDictionary
         }
         
         /// <summary>
-        /// 
+        /// Removes the elemet from tree.
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">Key of the elemet.</param>
+        /// <returns>True if removed.</returns>
         public bool Remove(TKey key)
         {
-            //RedBlackNode temp = this.rootNode;
+            RedBlackNode temp = this.rootNode;
 
-            //while (temp != null)
-            //{
-            //    switch (key.CompareTo(temp.NodeKey))
-            //    {
-            //        case -1:
-            //            temp = temp.LeftNode;
-            //            break;
-            //        case 1:
-            //            temp = temp.RightNode;
-            //            break;
-            //        default:
-            //            {
-            //                if(temp.IsLeaf)
-            //                {
-            //                    if(temp.ParentNode.LeftNode == temp)
-            //                    {
-            //                        temp.ParentNode.LeftNode = null;
-            //                        temp.ParentNode.RepairTree();
-            //                        return true;
-            //                    }
-            //                    temp.ParentNode.RightNode = null;
-            //                    temp.ParentNode.RepairTree();
-            //                    return true;
-            //                }
-            //                else if(temp.LeftNode == null)
-            //                {
-            //                    temp.RightNode.ParentNode = temp.ParentNode;
-            //                    if (temp.ParentNode.LeftNode == temp)
-            //                    {
-            //                        temp.ParentNode.LeftNode = temp.RightNode;
-            //                        temp.ParentNode.RepairTree();
-            //                        return true;
-            //                    }
-            //                    temp.ParentNode.RightNode = null;
-            //                    temp.ParentNode.RepairTree();
-            //                    return true;
-            //                }
-            //                else if(temp.RightNode == null)
-            //                {
-            //                    temp.LeftNode.ParentNode = temp.ParentNode;
-            //                    if (temp.ParentNode.LeftNode == temp)
-            //                    {
-            //                        temp.ParentNode.LeftNode = temp.LeftNode;
-            //                        temp.ParentNode.RepairTree();
-            //                        return true;
-            //                    }
-            //                    temp.ParentNode.RightNode = null;
-            //                    temp.ParentNode.RepairTree();
-            //                    return true;
-            //                }
-            //                else
-            //                {
-            //                    temp.RotateLeft();
-            //                    temp.ParentNode.LeftNode = temp.LeftNode;
-            //                    temp.LeftNode.ParentNode = temp.ParentNode;
-            //                    //temp.ParentNode.RepairTree();
-            //                    return true;
-            //                }
-            //            }
-                        
-            //    }
-            //}
+            while (temp != null)
+            {
+                switch (key.CompareTo(temp.NodeKey))
+                {
+                    case -1:
+                        temp = temp.LeftNode;
+                        break;
+                    case 1:
+                        temp = temp.RightNode;
+                        break;
+                    default:
+                        {
+                            if (temp.IsLeaf)
+                            {
+                                if (temp.ParentNode.LeftNode == temp)
+                                {
+                                    temp.ParentNode.LeftNode = null;
+                                    this.RepairTree(temp.ParentNode);
+                                    nodeCount--;
+                                    isModfied = true;
+                                    return true;
+                                }
+                                temp.ParentNode.RightNode = null;
+                                this.RepairTree(temp.ParentNode);
+                                nodeCount--;
+                                isModfied = true;
+                                return true;
+                            }
+                            else if (temp.LeftNode == null)
+                            {
+                                temp.RightNode.ParentNode = temp.ParentNode;
+                                if (temp.ParentNode.LeftNode == temp)
+                                {
+                                    temp.ParentNode.LeftNode = temp.RightNode;
+                                    this.RepairTree(temp.ParentNode);
+                                    nodeCount--;
+                                    isModfied = true;
+                                    return true;
+                                }
+                                temp.ParentNode.RightNode = null;
+                                this.RepairTree(temp.ParentNode);
+                                nodeCount--;
+                                isModfied = true;
+                                return true;
+                            }
+                            else if (temp.RightNode == null)
+                            {
+                                temp.LeftNode.ParentNode = temp.ParentNode;
+                                if (temp.ParentNode.LeftNode == temp)
+                                {
+                                    temp.ParentNode.LeftNode = temp.LeftNode;
+                                    this.RepairTree(temp.ParentNode);
+                                    nodeCount--;
+                                    isModfied = true;
+                                    return true;
+                                }
+                                temp.ParentNode.RightNode = null;
+                                this.RepairTree(temp.ParentNode);
+                                nodeCount--;
+                                isModfied = true;
+                                return true;
+                            }
+                            else
+                            {
+                                temp.RotateLeft();
+                                temp.ParentNode.LeftNode = temp.LeftNode;
+                                temp.LeftNode.ParentNode = temp.ParentNode;
+                                this.RepairTree(temp.ParentNode);
+                                nodeCount--;
+                                isModfied = true;
+                                return true;
+                            }
+                        }
+                }
+            }
             return false;
         }
 
         /// <summary>
-        /// 
+        /// Removes the elemet from tree.
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
+        /// <param name="item">Key Value pair of the elemet.</param>
+        /// <returns>True if removed.</returns> 
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            //RedBlackNode temp = this.rootNode;
+            RedBlackNode temp = this.rootNode;
 
-            //while (temp != null)
-            //{
-            //    switch (item.Key.CompareTo(temp.NodeKey))
-            //    {
-            //        case -1:
-            //            temp = temp.LeftNode;
-            //            break;
-            //        case 1:
-            //            temp = temp.RightNode;
-            //            break;
-            //        default:
-            //            { 
-            //                if (temp.NodeValue.CompareTo(item.Value) == 0)
-            //                {
-            //                    if (temp.IsLeaf)
-            //                    {
-            //                        if (temp.ParentNode.LeftNode == temp)
-            //                        {
-            //                            temp.ParentNode.LeftNode = null;
-            //                            temp.ParentNode.RepairTree();
-            //                            return true;
-            //                        }
-            //                        temp.ParentNode.RightNode = null;
-            //                        temp.ParentNode.RepairTree();
-            //                        return true;
-            //                    }
-            //                    else if (temp.LeftNode == null)
-            //                    {
-            //                        temp.RightNode.ParentNode = temp.ParentNode;
-            //                        if (temp.ParentNode.LeftNode == temp)
-            //                        {
-            //                            temp.ParentNode.LeftNode = temp.RightNode;
-            //                            temp.ParentNode.RepairTree();
-            //                            return true;
-            //                        }
-            //                        temp.ParentNode.RightNode = null;
-            //                        temp.ParentNode.RepairTree();
-            //                        return true;
-            //                    }
-            //                    else if (temp.RightNode == null)
-            //                    {
-            //                        temp.LeftNode.ParentNode = temp.ParentNode;
-            //                        if (temp.ParentNode.LeftNode == temp)
-            //                        {
-            //                            temp.ParentNode.LeftNode = temp.LeftNode;
-            //                            temp.ParentNode.RepairTree();
-            //                            return true;
-            //                        }
-            //                        temp.ParentNode.RightNode = null;
-            //                        temp.ParentNode.RepairTree();
-            //                        return true;
-            //                    }
-            //                    else
-            //                    {
-            //                        temp.RotateLeft();
-            //                        temp.ParentNode.LeftNode = temp.LeftNode;
-            //                        temp.LeftNode.ParentNode = temp.ParentNode;
-            //                        //temp.ParentNode.RepairTree();
-            //                        return true;
-            //                    }
-            //                }
-            //                else return false;
-            //            }
-
-            //    }
-            //}
+            while (temp != null)
+            {
+                switch (item.Key.CompareTo(temp.NodeKey))
+                {
+                    case -1:
+                        temp = temp.LeftNode;
+                        break;
+                    case 1:
+                        temp = temp.RightNode;
+                        break;
+                    default:
+                        {
+                            if (temp.IsLeaf)
+                            {
+                                if (temp.ParentNode.LeftNode == temp)
+                                {
+                                    temp.ParentNode.LeftNode = null;
+                                    this.RepairTree(temp.ParentNode);
+                                    nodeCount--;
+                                    isModfied = true;
+                                    return true;
+                                }
+                                temp.ParentNode.RightNode = null;
+                                this.RepairTree(temp.ParentNode);
+                                nodeCount--;
+                                isModfied = true;
+                                return true;
+                            }
+                            else if (temp.LeftNode == null)
+                            {
+                                temp.RightNode.ParentNode = temp.ParentNode;
+                                if (temp.ParentNode.LeftNode == temp)
+                                {
+                                    temp.ParentNode.LeftNode = temp.RightNode;
+                                    this.RepairTree(temp.ParentNode);
+                                    nodeCount--;
+                                    isModfied = true;
+                                    return true;
+                                }
+                                temp.ParentNode.RightNode = null;
+                                this.RepairTree(temp.ParentNode);
+                                nodeCount--;
+                                isModfied = true;
+                                return true;
+                            }
+                            else if (temp.RightNode == null)
+                            {
+                                temp.LeftNode.ParentNode = temp.ParentNode;
+                                if (temp.ParentNode.LeftNode == temp)
+                                {
+                                    temp.ParentNode.LeftNode = temp.LeftNode;
+                                    this.RepairTree(temp.ParentNode);
+                                    nodeCount--;
+                                    isModfied = true;
+                                    return true;
+                                }
+                                temp.ParentNode.RightNode = null;
+                                this.RepairTree(temp.ParentNode);
+                                nodeCount--;
+                                isModfied = true;
+                                return true;
+                            }
+                            else
+                            {
+                                temp.RotateLeft();
+                                temp.ParentNode.LeftNode = temp.LeftNode;
+                                temp.LeftNode.ParentNode = temp.ParentNode;
+                                this.RepairTree(temp.ParentNode);
+                                nodeCount--;
+                                isModfied = true;
+                                return true;
+                            }
+                        }
+                }
+            }
             return false;
         }
-
-
+        
         /// <summary>
-        /// 
+        /// Adds a node.
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
+        /// <param name="key">Key of the node.</param>
+        /// <param name="value">Value of the node. </param>
         public void Add(TKey key, TValue value)
         {
             RedBlackNode newNode = new RedBlackNode(key, value);
@@ -578,6 +713,8 @@ namespace MyDictionary
             {
                 this.rootNode = newNode;
                 this.rootNode.Color = NodeColor.BLACK;
+                nodeCount++;
+                isModfied = true;
                 return;
             }
 
@@ -586,24 +723,25 @@ namespace MyDictionary
             this.RepairTree(newNode);
 
             this.nodeCount++;
+            isModfied = true;
             this.rootNode.Color = NodeColor.BLACK;
             return;           
         }
 
         /// <summary>
-        /// 
+        /// Adds a node.
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">Key Value pair of the node.</param>
         public void Add(KeyValuePair<TKey, TValue> item)
         {
             this.Add(item.Key, item.Value);
         }
 
         /// <summary>
-        /// 
+        /// Adds a node.
         /// </summary>
-        /// <param name="newNode"></param>
-        /// <param name="rootNode"></param>
+        /// <param name="newNode">New NOde which should be added.</param>
+        /// <param name="rootNode">Root node of subtree.</param>
         private static void RecursiveAdd(RedBlackNode newNode, RedBlackNode rootNode)
         {
             if(newNode.NodeKey.CompareTo(rootNode.NodeKey) == 0)
@@ -635,6 +773,10 @@ namespace MyDictionary
             return;            
         }
 
+        /// <summary>
+        /// Corects tree.
+        /// </summary>
+        /// <param name="node">Start fom this node.</param>
         private void RepairTree(RedBlackNode node)
         {
             if(node == this.rootNode)
@@ -708,11 +850,9 @@ namespace MyDictionary
                
             }//case4            
         }
-
-
-
+        
         /// <summary>
-        /// 
+        /// Clear the tree.
         /// </summary>
         public void Clear()
         {
@@ -721,9 +861,9 @@ namespace MyDictionary
         }
 
         /// <summary>
-        /// 
+        /// Recursive clears the tree.
         /// </summary>
-        /// <param name="node"></param>
+        /// <param name="node">from this node.</param>
         private static void RecursiveClear(RedBlackNode node)
         {
             if(node != null)
@@ -735,11 +875,11 @@ namespace MyDictionary
         }
 
         /// <summary>
-        /// 
+        /// Try Get Value of the NOde.
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="key">Key of the Node.</param>
+        /// <param name="value">Value of the Node.</param>
+        /// <returns>True if got.</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
             value = this.rootNode.NodeValue;
@@ -771,10 +911,10 @@ namespace MyDictionary
         }
 
         /// <summary>
-        /// 
+        /// If tree contains the node.
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
+        /// <param name="item">Node</param>
+        /// <returns>True if contains.</returns>
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {            
             var temp = this.rootNode;
@@ -802,10 +942,10 @@ namespace MyDictionary
         }
 
         /// <summary>
-        /// 
+        /// Copy to array.
         /// </summary>
-        /// <param name="array"></param>
-        /// <param name="arrayIndex"></param>
+        /// <param name="array">Array.</param>
+        /// <param name="arrayIndex">From which index.</param>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             RedBlackNode temp = this.rootNode;
@@ -815,11 +955,11 @@ namespace MyDictionary
         }
 
         /// <summary>
-        /// 
+        /// Copy subtree into array.
         /// </summary>
-        /// <param name="i"></param>
-        /// <param name="t"></param>
-        /// <param name="array"></param>
+        /// <param name="i">Index of the array.</param>
+        /// <param name="t">Root of the subtree.</param>
+        /// <param name="array">Array.</param>
         private void AddToArr(ref int i, RedBlackNode t , KeyValuePair<TKey, TValue>[] array)
         {
             if (t == null)
@@ -832,7 +972,11 @@ namespace MyDictionary
             AddToArr(ref i, t.LeftNode, array);
             AddToArr(ref i, t.RightNode, array);
         }
-
+        
+        /// <summary>
+        /// Move to next node.
+        /// </summary>
+        /// <returns>True if moved.</returns>
         public bool MoveNext()
         {
             RedBlackNode temp;
@@ -885,10 +1029,11 @@ namespace MyDictionary
             return true;
 
         }
-
         
-
-        
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>An System.Collections.IEnumerator object that can be used to iterate through the collection.</returns>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             
@@ -896,7 +1041,11 @@ namespace MyDictionary
             this.Reset();
             return (IEnumerator<KeyValuePair<TKey, TValue>>)this;
         }
-
+              
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>An System.Collections.IEnumerator object that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             this.isModfied = false;
@@ -904,15 +1053,14 @@ namespace MyDictionary
         }
 
         /// <summary>
-        /// 
+        /// Enum for NOde color.
         /// </summary>
         public enum NodeColor
         {
             RED = 0,
             BLACK = 1
         }
-
-        
+         
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls

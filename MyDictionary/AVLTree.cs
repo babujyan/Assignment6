@@ -11,9 +11,9 @@ namespace MyDictionary
 
         private int size;
 
-        private Node<TValue>[] array;
+        private Node[] array;
 
-        private Node<TValue> this[int index]
+        private Node this[int index]
         {
             get
             {
@@ -28,7 +28,7 @@ namespace MyDictionary
         public AVLTree(int size = 2)
         {
             this.size = size;
-            this.array = new Node<TValue>[this.size];
+            this.array = new Node[this.size];
         }
 
         /// <summary>
@@ -36,9 +36,9 @@ namespace MyDictionary
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        public void Add(int key, TValue value)
+        public void Add(TKey key, TValue value)
         {
-            Node<TValue> node = new Node<TValue>(value);
+            Node node = new Node(key);
 
             if (this.index == this.array.Length)
             {
@@ -134,7 +134,7 @@ namespace MyDictionary
         /// </summary>
         private void Grow()
         {
-            this.array = new Node<TValue>[size << 1];
+            this.array = new Node[size << 1];
         }
 
 
@@ -142,7 +142,7 @@ namespace MyDictionary
         ///// 
         ///// </summary>
         ///// <typeparam name="TKey"></typeparam>
-        public class Node<TKey>
+        public class Node
         {
             public int Key { get; set; }
 
@@ -162,8 +162,8 @@ namespace MyDictionary
 
             public readonly TKey Data;
 
-            private Node<TKey> leftChild;
-            public Node<TKey> LeftChild
+            private Node leftChild;
+            public Node LeftChild
             {
                 get
                 {
@@ -177,8 +177,8 @@ namespace MyDictionary
             }
 
 
-            private Node<TKey> rightChild;
-            public Node<TKey> RightChild
+            private Node rightChild;
+            public Node RightChild
             {
                 get
                 {

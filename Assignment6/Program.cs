@@ -28,13 +28,15 @@ namespace Assignment6
                 watch = Stopwatch.StartNew();
 
                 
-                for (int j = 0; j < 100; j++)
+                for (int j = 0; j < 10000; j++)
                 {
-                    a[i].Add(j,j);                    
+                    a[i].Add(random.Next(), random.Next());                    
                 }
-                Console.WriteLine(a[i].ContainsKey(50));
-                a[i][50] = 20;
-                Console.WriteLine(a[i][50]);
+                a[i].Add(324586222, 232516);
+                //Console.WriteLine(a[i].ContainsKey(50));
+                
+                Console.WriteLine(324586222);
+                a[i].Remove(324586222);
                 watch.Stop();
                 elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
                 //Console.WriteLine(elapsedTime);
