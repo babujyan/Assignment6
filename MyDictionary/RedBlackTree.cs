@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MyDictionary
 {
-    public class RedBlackTree<TKey, TValue> : IDictionary<TKey, TValue>, IEnumerator<KeyValuePair<TKey, TValue>> where TKey : IComparable<TKey> where TValue : IComparable<TValue>
+    public class RedBlackTree<TKey, TValue> : IDictionary<TKey, TValue>, IEnumerator<KeyValuePair<TKey, TValue>> where TKey : IComparable<TKey>
     {
         /// <summary>
         /// Referens to Root node.
@@ -930,7 +930,7 @@ namespace MyDictionary
                         temp = temp.RightNode;
                         break;
                     default:
-                        if(item.Value.CompareTo(temp.NodeValue) == 0)
+                        if(item.Value.Equals(temp.NodeValue))
                         {
                             return true;
                         }

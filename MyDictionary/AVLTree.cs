@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MyDictionary
 {
-    public class AVLTree<TKey, TValue> : IDictionary<TKey, TValue>, IEnumerator<KeyValuePair<TKey, TValue>> where TKey : IComparable<TKey> where TValue : IComparable<TValue>
+    public class AVLTree<TKey, TValue> : IDictionary<TKey, TValue>, IEnumerator<KeyValuePair<TKey, TValue>> where TKey : IComparable<TKey>
     {
        
         /// <summary>
@@ -855,7 +855,7 @@ namespace MyDictionary
                         temp = temp.RightNode;
                         break;
                     default:
-                        if (item.Value.CompareTo(temp.NodeValue) == 0)
+                        if (item.Value.Equals(temp.NodeValue))
                         {
                             return true;
                         }
@@ -976,16 +976,6 @@ namespace MyDictionary
             this.isModfied = false;
             return (IEnumerator)this;
         }
-
-        /// <summary>
-        /// Enum for NOde color.
-        /// </summary>
-        public enum NodeColor
-        {
-            RED = 0,
-            BLACK = 1
-        }
-
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
