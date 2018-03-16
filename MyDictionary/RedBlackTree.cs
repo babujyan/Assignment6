@@ -426,7 +426,7 @@ namespace MyDictionary
         {
             get
             {
-                List<TKey> list = new List<TKey>();
+                ICollection<TKey> list = new List<TKey>();
                 this.Reset();
                 foreach(var i in this)
                 {
@@ -444,7 +444,7 @@ namespace MyDictionary
         {
             get
             {
-                List<TValue> list = new List<TValue>();
+                ICollection<TValue> list = new List<TValue>();
                 this.Reset();
                 foreach (var i in this)
                 {
@@ -1039,7 +1039,7 @@ namespace MyDictionary
             
             this.isModfied = false;
             this.Reset();
-            return (IEnumerator<KeyValuePair<TKey, TValue>>)this;
+            return this;
         }
               
         /// <summary>
@@ -1049,7 +1049,7 @@ namespace MyDictionary
         IEnumerator IEnumerable.GetEnumerator()
         {
             this.isModfied = false;
-            return (IEnumerator)this;
+            return this;
         }
 
         /// <summary>

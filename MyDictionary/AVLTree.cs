@@ -270,73 +270,6 @@ namespace MyDictionary
             /// <param name="value">Value</param>
             public AVLNode(TKey key, TValue value) : this(key, value, null, null) { }
 
-
-            /// <summary>
-            /// Rotates node left.
-            /// </summary>
-            public void RotateLeft()
-            {
-                if (this.rightNode != null)
-                {
-                    AVLNode node = this.rightNode;
-
-                    this.rightNode = node.leftNode;
-                    if (node.leftNode != null)
-                    {
-                        node.leftNode.parentNode = this;
-                    }
-                    node.leftNode = this;
-                    node.parentNode = this.parentNode;
-                    if (this.parentNode != null)
-                    {
-                        if (this == this.parentNode.leftNode)
-                        {
-                            this.parentNode.leftNode = node;
-                        }
-                        else
-                        {
-                            this.parentNode.rightNode = node;
-                        }
-                    }
-                    
-                    this.parentNode = node;
-                }
-            }
-
-            /// <summary>
-            /// Rotates node right.
-            /// </summary>
-            public void RotateRight()
-            {
-                if (this.leftNode != null)
-                {
-                    AVLNode node = this.leftNode;
-
-                    this.leftNode = node.rightNode;
-                    if (node.rightNode != null)
-                    {
-                        node.rightNode.parentNode = this;
-                    }
-                    node.rightNode = this;
-                    node.parentNode = this.parentNode;
-                    if (this.parentNode != null)
-                    {
-                        if (this == this.parentNode.leftNode)
-                        {
-                            this.parentNode.leftNode = node;
-                        }
-                        else
-                        {
-                            this.parentNode.rightNode = node;
-                        }
-                    }
-                    
-                    this.parentNode = node;
-                }
-
-
-                return;
-            }
         }
 
         /// <summary>
@@ -559,7 +492,7 @@ namespace MyDictionary
                             }
                             else
                             {
-                                temp.RotateLeft();
+                                this.RotateLeft(temp);
                                 temp.ParentNode.LeftNode = temp.LeftNode;
                                 temp.LeftNode.ParentNode = temp.ParentNode;
                                 this.RepairTree(temp.ParentNode);
@@ -646,7 +579,7 @@ namespace MyDictionary
                             }
                             else
                             {
-                                temp.RotateLeft();
+                                this.RotateLeft(temp);
                                 temp.ParentNode.LeftNode = temp.LeftNode;
                                 temp.LeftNode.ParentNode = temp.ParentNode;
                                 this.RepairTree(temp.ParentNode);
@@ -739,16 +672,19 @@ namespace MyDictionary
         /// <param name="node">Start fom this node.</param>
         private void RepairTree(AVLNode node)
         {
-            if (node == this.rootNode)
-            {
-                return;
-            }
-
             AVLNode temp = node;
-            while (temp.BalanceFactor < 1 && temp.BalanceFactor > -1)
+
+            //if (node == this.rootNode)
+            //{ 
+            //    return;
+            //}
+
+            
+
+            while (temp.BalanceFactor <= 1 && temp.BalanceFactor >= -1)
             {
                 if (temp.ParentNode != null)
-                    temp = temp.ParentNode;
+                    this.RepairTree(temp.ParentNode);
                 return;
             }
 
@@ -756,23 +692,24 @@ namespace MyDictionary
             {
                 if(temp.LeftNode.BalanceFactor > -1)
                 {
-                    temp.RotateRight();
+                    this.RotateRight(temp);
                     RepairTree(temp);
                     return;
                 }
 
-                temp.LeftNode.RotateLeft();
-                temp.RotateRight();
+                this.RotateLeft(temp.LeftNode);
+                this.RotateRight(temp);
                 return;
             }
 
             if(temp.RightNode.BalanceFactor < 1)
             {
-                temp.RotateLeft();
+                this.RotateLeft(temp);
+                return;
             }
 
-            temp.RightNode.RotateRight();
-            temp.RotateLeft();
+            this.RotateRight(temp.RightNode);
+            this.RotateLeft(temp);
             return;                     
         }
 
@@ -975,6 +912,85 @@ namespace MyDictionary
         {
             this.isModfied = false;
             return (IEnumerator)this;
+        }
+
+
+        /// <summary>
+        /// Rotates node left.
+        /// </summary>
+        private void RotateLeft(AVLNode n)
+        {
+            if (n.RightNode != null)
+            {
+                AVLNode node = n.RightNode;
+
+                n.RightNode = node.LeftNode;
+                if (node.LeftNode != null)
+                {
+                    node.LeftNode.ParentNode = n;
+                }
+                node.LeftNode = n;
+                node.ParentNode = n.ParentNode;
+                if (n.ParentNode != null)
+                {
+                    if (n == n.ParentNode.LeftNode)
+                    {
+                        n.ParentNode.LeftNode = node;
+                    }
+                    else
+                    {
+                        n.ParentNode.RightNode = node;
+                    }
+                }
+
+                if (n.ParentNode == null)
+                {
+                    this.rootNode = node;
+                    n.ParentNode = node;
+                }
+                n.ParentNode = node;
+            }
+        }
+
+        /// <summary>
+        /// Rotates node right.
+        /// </summary>
+        private void RotateRight(AVLNode n)
+        {
+            if (n.LeftNode != null)
+            {
+                AVLNode node = n.LeftNode;
+
+                n.LeftNode = node.RightNode;
+                if (node.RightNode != null)
+                {
+                    node.RightNode.ParentNode = n;
+                }
+                node.RightNode = n;
+                node.ParentNode = n.ParentNode;
+                if (n.ParentNode != null)
+                {
+                    if (n == n.ParentNode.LeftNode)
+                    {
+                        n.ParentNode.LeftNode = node;
+                    }
+                    else
+                    {
+                        n.ParentNode.RightNode = node;
+                    }
+                }
+
+                if (n.ParentNode == null)
+                {
+                    this.rootNode = node;
+                    n.ParentNode = node;
+                }
+
+                n.ParentNode = node;
+            }
+
+
+            return;
         }
 
         #region IDisposable Support

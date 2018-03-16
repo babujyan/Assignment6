@@ -11,160 +11,119 @@ namespace Assignment6
 {
     class Program
     {
-        static void Add< T , TKey, TValue>(T t) where T : IDictionary<TKey,TValue>
-        {
+        public delegate void A(IDictionary<int, int> d, int count);
 
+        public static void Add(IDictionary<int, int> d, int count)
+        {
+            Random random = new Random(10);
+
+            var watch = Stopwatch.StartNew();
+
+
+            for (int j = 0; j < count; j++)
+            {
+                d.Add(random.Next(), j);
+            }
+
+            watch.Stop();
+            var elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
+            Console.WriteLine(d.GetType().Name +"(" + count +") = " + elapsedTime);
+        }
+
+        public static void Remove(IDictionary<int, int> d, int count)
+        {
+            Random random = new Random(10);
+
+            var watch = Stopwatch.StartNew();
+
+
+            for (int j = 0; j < count; j++)
+            {
+                d.Remove(random.Next());
+            }
+
+            watch.Stop();
+            var elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
+            Console.WriteLine(d.GetType().Name + "(" + count + ") = " + elapsedTime);
+        }
+
+        public static void ContainsKey(IDictionary<int, int> d, int count)
+        {
+            Random random = new Random(10);
+
+            var watch = Stopwatch.StartNew();
+
+
+            for (int j = 0; j < count; j++)
+            {
+                d.ContainsKey(random.Next());
+            }
+
+            watch.Stop();
+            var elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
+            Console.WriteLine(d.GetType().Name + "(" + count + ") = " + elapsedTime);
         }
 
         static void Main(string[] args)
-        {            
-            double elapsedTime;
-            Random random = new Random(10);
-            AVLTree<int, int>[] a = new AVLTree<int, int>[4];
-            RedBlackTree<int, int>[] b = new RedBlackTree<int, int>[4];
-            Dictionary<int, int>[] c = new Dictionary<int, int>[4];
-            var watch = Stopwatch.StartNew();
-            
+        {
+            A add = new A(Add);
+            A remove = new A(Remove);
+            A containsKey = new A(ContainsKey);
 
-            // AVL
-            random = new Random(10);
-            a[0] = new AVLTree<int, int>();
-            watch = Stopwatch.StartNew();
-
-
-            for (int j = 0; j < 320; j++)
+            while (true)
             {
-                a[0].Add(random.Next(), j);
+                Console.WriteLine("Add");
+
+                add(new RedBlackTree<int, int>(), 320);
+                add((new AVLTree<int, int>()), 320);
+                add(new Dictionary<int, int>(), 320);
+                Console.WriteLine();
+                add(new RedBlackTree<int, int>(), 640);
+                add((new AVLTree<int, int>()), 640);
+                add(new Dictionary<int, int>(), 640);
+                Console.WriteLine();
+
+                add(new RedBlackTree<int, int>(), 1280);
+                add((new AVLTree<int, int>()), 1280);
+                add(new Dictionary<int, int>(), 1280);
+                Console.WriteLine();
+
+                Console.WriteLine("Contains Key");
+
+                containsKey(new RedBlackTree<int, int>(), 320);
+                containsKey((new AVLTree<int, int>()), 320);
+                containsKey(new Dictionary<int, int>(), 320);
+                Console.WriteLine();
+
+                containsKey(new RedBlackTree<int, int>(), 640);
+                containsKey((new AVLTree<int, int>()), 640);
+                containsKey(new Dictionary<int, int>(), 640);
+                Console.WriteLine();
+
+                containsKey(new RedBlackTree<int, int>(), 1280);
+                containsKey((new AVLTree<int, int>()), 1280);
+                containsKey(new Dictionary<int, int>(), 1280);
+                Console.WriteLine();
+
+                Console.WriteLine("Remove");
+
+                remove(new RedBlackTree<int, int>(), 320);
+                remove((new AVLTree<int, int>()), 320);
+                remove(new Dictionary<int, int>(), 320);
+                Console.WriteLine();
+
+                remove(new RedBlackTree<int, int>(), 640);
+                remove((new AVLTree<int, int>()), 640);
+                remove(new Dictionary<int, int>(), 640);
+                Console.WriteLine();
+
+                remove(new RedBlackTree<int, int>(), 1280);
+                remove((new AVLTree<int, int>()), 1280);
+                remove(new Dictionary<int, int>(), 1280);
+                Console.WriteLine();
+
+                Console.ReadLine();
             }
-            
-            watch.Stop();
-            elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
-            Console.WriteLine(elapsedTime);
-
-            //RedBlack
-            random = new Random(10);
-            b[0] = new RedBlackTree<int, int>();
-            watch = Stopwatch.StartNew();
-
-
-            for (int j = 0; j < 320; j++)
-            {
-                b[0].Add(random.Next(), j);
-            }
-
-            watch.Stop();
-            elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
-            Console.WriteLine(elapsedTime);
-
-            //Hash
-            random = new Random(10);
-            c[0] = new Dictionary<int, int>();
-            watch = Stopwatch.StartNew();
-
-
-            for (int j = 0; j < 320; j++)
-            {
-                c[0].Add(random.Next(), j);
-            }
-
-            watch.Stop();
-            elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
-            Console.WriteLine(elapsedTime);
-
-            //AVL
-            random = new Random(10);
-            a[1] = new AVLTree<int, int>();
-            watch = Stopwatch.StartNew();
-
-
-            for (int j = 0; j < 640; j++)
-            {
-                a[1].Add(random.Next(), j);
-            }
-
-            watch.Stop();
-            elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
-            Console.WriteLine(elapsedTime);
-
-            //RedBlack
-            random = new Random(10);
-            b[1] = new RedBlackTree<int, int>();
-            watch = Stopwatch.StartNew();
-
-
-            for (int j = 0; j < 640; j++)
-            {
-                b[1].Add(random.Next(), j);
-            }
-
-            watch.Stop();
-            elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
-            Console.WriteLine(elapsedTime);
-
-
-            //Hash
-            random = new Random(10);
-            c[1] = new Dictionary<int, int>();
-            watch = Stopwatch.StartNew();
-
-
-            for (int j = 0; j < 640; j++)
-            {
-                c[1].Add(random.Next(), j);
-            }
-
-            watch.Stop();
-            elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
-            Console.WriteLine(elapsedTime);
-
-
-            //AVL
-            random = new Random(10);
-            a[2] = new AVLTree<int, int>();
-            watch = Stopwatch.StartNew();
-
-
-            for (int j = 0; j < 1280; j++)
-            {
-                a[2].Add(random.Next(), j);
-            }
-
-            watch.Stop();
-            elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
-            Console.WriteLine(elapsedTime);
-
-
-
-            //RedBlack
-            random = new Random(10);
-            b[2] = new RedBlackTree<int, int>();
-            watch = Stopwatch.StartNew();
-
-
-            for (int j = 0; j < 1280; j++)
-            {
-                b[2].Add(random.Next(), j);
-            }
-
-            watch.Stop();
-            elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
-            Console.WriteLine(elapsedTime);
-
-
-            //Hash
-            random = new Random(10);
-            c[2] = new Dictionary<int, int>();
-            watch = Stopwatch.StartNew();
-
-
-            for (int j = 0; j < 1280; j++)
-            {
-                c[2].Add(random.Next(), j);
-            }
-
-            watch.Stop();
-            elapsedTime = watch.ElapsedTicks * (1000000.0 / Stopwatch.Frequency);
-            Console.WriteLine(elapsedTime);
-        }                       
+        }
     }
 }
