@@ -13,18 +13,16 @@ namespace Assignment6
     class Program
     {
         static void Main(string[] args)
-        {
-            
-            
+        {            
             double elapsedTime;
             Random random = new Random(10);
-            RedBlackTree<int, int>[] a = new RedBlackTree<int, int>[1000];
+            AVLTree<int, int>[] a = new AVLTree<int, int>[1000];
             var watch = Stopwatch.StartNew();
 
             for (int i = 0; i < 1; i++)
             {
                 random = new Random(10);
-                a[i] = new RedBlackTree<int, int>();
+                a[i] = new AVLTree<int, int>();
                 watch = Stopwatch.StartNew();
 
                 
